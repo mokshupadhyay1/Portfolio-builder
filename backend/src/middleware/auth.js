@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const serverStartTime = Date.now();
+
 // Protect routes
 exports.protect = async (req, res, next) => {
   let token;
@@ -24,6 +26,13 @@ exports.protect = async (req, res, next) => {
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Invalidate tokens issued before server startup to log out users on server restart
+    if (decoded.iat && decoded.iat * 1000 < serverStartTime) {
+      const error = new Error('Session expired due to server restart');
+      error.statusCode = 401;
+      return next(error);
+    }
 
     // Fetch user and attach to request
     req.user = await User.findById(decoded.id);
