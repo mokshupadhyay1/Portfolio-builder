@@ -4,7 +4,9 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { 
   Layout, User, FileText, Globe, Settings, LogOut, ArrowRight, CheckCircle, 
   Sparkles, Layers, Sliders, Play, Download, Search, Heart, Briefcase, Eye, ChevronRight,
-  Server, Cpu, Smartphone, Shield
+  Server, Cpu, Smartphone, Shield, Zap, Code, Star, Users, Palette, BarChart3, 
+  ArrowUpRight, Github, Twitter, Linkedin, Mail, ChevronDown, Monitor, Rocket,
+  Lock, Clock, Terminal, TrendingUp
 } from 'lucide-react';
 import API from './services/api';
 import TemplateRenderer from './components/TemplateRenderer';
@@ -222,99 +224,467 @@ const ProtectedRoute = ({ children }) => {
 
 // Pages
 const LandingPage = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const features = [
+    {
+      icon: Globe,
+      title: 'No-Code Portfolio Builder',
+      description: 'Craft pixel-perfect developer portfolios with 5 premium templates. Customize colors, fonts, layouts — all without writing a single line of code.',
+      tag: 'Drag & Drop',
+      color: 'brand',
+      gradient: 'from-indigo-500 to-purple-500'
+    },
+    {
+      icon: FileText,
+      title: 'AI Resume Analyzer',
+      description: 'Upload your PDF resume and get instant ATS compatibility scores, keyword gap analysis, and AI-powered improvement suggestions via Gemini.',
+      tag: 'Gemini AI Powered',
+      color: 'accent',
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+      icon: Layers,
+      title: 'Template Cloning',
+      description: 'See a portfolio you love in the showcase? Clone its entire design architecture instantly — layouts, colors, and sections — with zero data leakage.',
+      tag: 'One-Click Clone',
+      color: 'green',
+      gradient: 'from-emerald-500 to-teal-500'
+    },
+    {
+      icon: Download,
+      title: 'Full Code Export',
+      description: 'Download your portfolio as a production-ready Vite + React + Tailwind project. Self-host anywhere — Vercel, Netlify, or your own VPS.',
+      tag: 'ZIP Download',
+      color: 'yellow',
+      gradient: 'from-amber-500 to-orange-500'
+    },
+    {
+      icon: Eye,
+      title: 'Community Showcase',
+      description: 'Publish your portfolio to a public gallery. Get discovered by peers, collect upvotes, and build your developer reputation organically.',
+      tag: 'Social Proof',
+      color: 'cyan',
+      gradient: 'from-cyan-500 to-blue-500'
+    },
+    {
+      icon: Shield,
+      title: 'Admin Moderation',
+      description: 'Full admin panel with user management, portfolio moderation, spam reporting, and platform analytics. Built for scale from day one.',
+      tag: 'Role-Based Access',
+      color: 'rose',
+      gradient: 'from-rose-500 to-red-500'
+    }
+  ];
+
+  const steps = [
+    { step: '01', title: 'Sign Up & Choose Track', description: 'Create your account and select your developer specialization — Frontend, Backend, Full Stack, AI/ML, Mobile, or DevOps.', icon: Rocket },
+    { step: '02', title: 'Build Your Portfolio', description: 'Pick from 5 premium templates, fill in your details, customize themes, and preview your portfolio in real-time.', icon: Palette },
+    { step: '03', title: 'Launch & Get Discovered', description: 'Publish to the community showcase, share your unique link with recruiters, or export the full source code.', icon: TrendingUp }
+  ];
+
+  const stats = [
+    { value: '5+', label: 'Premium Templates' },
+    { value: 'AI', label: 'Resume Analysis' },
+    { value: '1-Click', label: 'Code Export' },
+    { value: '100%', label: 'Open Source' }
+  ];
+
+  const techStack = [
+    { name: 'React', icon: Code },
+    { name: 'Node.js', icon: Server },
+    { name: 'MongoDB', icon: Cpu },
+    { name: 'Tailwind CSS', icon: Palette },
+    { name: 'Gemini AI', icon: Sparkles },
+    { name: 'JWT Auth', icon: Lock }
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col bg-dark-bg">
-      {/* Header */}
-      <header className="max-w-7xl mx-auto w-full px-6 py-6 flex items-center justify-between border-b border-dark-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center font-display font-bold text-white text-2xl">
-            D
+    <div className="min-h-screen flex flex-col bg-dark-bg overflow-hidden">
+
+      {/* ─── Floating Background Orbs ─── */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-500/10 blur-[120px] animate-float-slow" />
+        <div className="absolute top-1/3 -right-32 w-[400px] h-[400px] rounded-full bg-accent-500/10 blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 left-1/4 w-[350px] h-[350px] rounded-full bg-pink-500/8 blur-[100px] animate-float-slow" style={{ animationDelay: '4s' }} />
+      </div>
+
+      {/* ─── Navigation ─── */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? 'glass border-b border-dark-border py-4' 
+          : 'bg-transparent py-6'
+      }`}>
+        <div className="max-w-7xl mx-auto w-full px-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center font-display font-bold text-white text-xl shadow-lg shadow-brand-500/25">
+              D
+            </div>
+            <span className="font-display font-bold text-2xl text-gradient">DevLaunch</span>
           </div>
-          <span className="font-display font-bold text-2xl text-gradient">DevLaunch</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link to="/login" className="text-gray-300 hover:text-white transition-colors text-sm font-semibold">
-            Login
-          </Link>
-          <Link to="/signup" className="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold shadow-lg shadow-brand-500/25 transition-all">
-            Get Started
-          </Link>
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
+            <a href="#how-it-works" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">How It Works</a>
+            <a href="#tech" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Tech Stack</a>
+          </nav>
+          <div className="flex items-center gap-4">
+            <Link to="/login" className="text-gray-300 hover:text-white transition-colors text-sm font-semibold">
+              Login
+            </Link>
+            <Link to="/signup" className="group relative px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 text-white text-sm font-semibold shadow-lg shadow-brand-500/25 transition-all hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5">
+              Get Started
+              <div className="absolute inset-0 rounded-xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="flex-1 max-w-7xl mx-auto w-full px-6 py-20 flex flex-col lg:flex-row items-center gap-16 justify-center">
-        <div className="flex-1 space-y-8 text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-dark-border text-xs text-brand-200">
-            <Sparkles size={14} className="text-accent-500 animate-pulse" />
-            Empowering students to stand out
+      {/* ─── Hero Section ─── */}
+      <section className="relative z-10 max-w-7xl mx-auto w-full px-6 pt-36 pb-20 flex flex-col lg:flex-row items-center gap-16 justify-center">
+        <div className="flex-1 space-y-8 text-left animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-dark-border text-xs text-brand-200 backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            The Developer Branding Platform
           </div>
-          <h1 className="font-display font-extrabold text-5xl lg:text-7xl leading-tight text-white tracking-tight">
-            Build a <span className="text-gradient">Stunning Portfolio</span> and ATS-Proof Resume
+
+          <h1 className="font-display font-extrabold text-5xl lg:text-7xl leading-[1.1] text-white tracking-tight">
+            Build a{' '}
+            <span className="text-gradient-animated">Stunning Portfolio</span>
+            <br />
+            <span className="text-gray-300">and ATS-Proof Resume</span>
           </h1>
+
           <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
-            DevLaunch is the Developer Branding Platform built for placements. Launch high-fidelity portfolio websites, analyze resumes instantly, and stand out to recruiters.
+            DevLaunch helps developers create high-fidelity portfolio websites, analyze resumes with AI, and get discovered by recruiters — all from one platform.
           </p>
-          <div className="flex items-center gap-4">
-            <Link to="/signup" className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold shadow-lg shadow-brand-500/25 transition-all hover:translate-x-1 duration-200">
-              Create Your Account <ArrowRight size={18} />
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <Link to="/signup" className="group flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold shadow-lg shadow-brand-500/25 transition-all hover:shadow-xl hover:shadow-brand-500/40 hover:-translate-y-0.5 duration-300">
+              Start Building — It's Free
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link to="/showcase" className="px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-200 border border-dark-border font-semibold transition-all">
+            <Link to="/showcase" className="group flex items-center gap-2 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-gray-200 border border-dark-border font-semibold transition-all backdrop-blur-sm">
+              <Play size={16} className="text-brand-500" />
               Explore Showcase
             </Link>
           </div>
+
+          {/* Mini Social Proof */}
+          <div className="flex items-center gap-4 pt-2">
+            <div className="flex -space-x-2">
+              {['bg-brand-500','bg-accent-500','bg-pink-500','bg-emerald-500'].map((bg, i) => (
+                <div key={i} className={`w-8 h-8 rounded-full ${bg} border-2 border-dark-bg flex items-center justify-center text-[10px] font-bold text-white`}>
+                  {['M','A','S','R'][i]}
+                </div>
+              ))}
+            </div>
+            <div className="text-xs text-gray-400">
+              <span className="text-white font-semibold">Trusted by developers</span> building their careers
+            </div>
+          </div>
         </div>
 
-        {/* Feature Cards Grid (visual wow factor) */}
-        <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="glass p-8 rounded-2xl border-glow flex flex-col justify-between h-64">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-500 flex items-center justify-center mb-6">
-                <Globe size={24} />
+        {/* Hero Visual — Floating Dashboard Preview */}
+        <div className="flex-1 w-full relative" style={{ animationDelay: '0.3s' }}>
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            {/* Main Preview Card */}
+            <div className="relative glass rounded-2xl border border-dark-border p-1 shadow-2xl shadow-brand-500/10 animate-float" style={{ animationDuration: '8s' }}>
+              {/* Fake Browser Chrome */}
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-dark-border">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                </div>
+                <div className="flex-1 mx-8">
+                  <div className="bg-white/5 rounded-lg px-4 py-1.5 text-[10px] text-gray-500 font-mono text-center">
+                    devlaunch.app/portfolio/your-name
+                  </div>
+                </div>
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">No-Code Portfolio Builder</h3>
-              <p className="text-xs text-gray-400">Choose professional developer templates, customize theme colors, ordering and fonts in real-time.</p>
+              {/* Simulated Portfolio Preview */}
+              <div className="p-6 space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center animate-glow-pulse">
+                    <Code size={28} className="text-white" />
+                  </div>
+                  <div>
+                    <div className="h-4 w-32 rounded bg-white/15" />
+                    <div className="h-3 w-24 rounded bg-white/8 mt-2" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="h-20 rounded-xl bg-gradient-to-br from-brand-500/10 to-brand-500/5 border border-brand-500/10 p-3">
+                    <div className="h-2 w-12 rounded bg-brand-500/30" />
+                    <div className="h-6 w-8 rounded bg-brand-500/20 mt-2" />
+                  </div>
+                  <div className="h-20 rounded-xl bg-gradient-to-br from-accent-500/10 to-accent-500/5 border border-accent-500/10 p-3">
+                    <div className="h-2 w-12 rounded bg-accent-500/30" />
+                    <div className="h-6 w-8 rounded bg-accent-500/20 mt-2" />
+                  </div>
+                  <div className="h-20 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/10 p-3">
+                    <div className="h-2 w-12 rounded bg-emerald-500/30" />
+                    <div className="h-6 w-8 rounded bg-emerald-500/20 mt-2" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-2.5 w-full rounded bg-white/8" />
+                  <div className="h-2.5 w-4/5 rounded bg-white/5" />
+                  <div className="h-2.5 w-3/5 rounded bg-white/3" />
+                </div>
+              </div>
             </div>
-            <span className="text-xs text-brand-500 font-semibold inline-flex items-center gap-1">JSON-driven layouts <Sparkles size={12} /></span>
-          </div>
 
-          <div className="glass p-8 rounded-2xl border-glow flex flex-col justify-between h-64">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-accent-500/20 text-accent-500 flex items-center justify-center mb-6">
-                <FileText size={24} />
+            {/* Floating Badge — Top Right */}
+            <div className="absolute -top-4 -right-4 glass px-4 py-2 rounded-xl border border-brand-500/20 shadow-lg animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}>
+              <div className="flex items-center gap-2 text-xs">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-green-400 font-semibold">Portfolio Live</span>
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">ATS Resume Analyzer</h3>
-              <p className="text-xs text-gray-400">Upload PDF resume, evaluate structure and keywords. Get Gemini AI recommendations for enhancements.</p>
             </div>
-            <span className="text-xs text-accent-500 font-semibold inline-flex items-center gap-1">Rule-based + AI feedback <Sparkles size={12} /></span>
-          </div>
 
-          <div className="glass p-8 rounded-2xl border-glow flex flex-col justify-between h-64">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center mb-6">
-                <Layers size={24} />
+            {/* Floating Badge — Bottom Left */}
+            <div className="absolute -bottom-4 -left-4 glass px-4 py-2.5 rounded-xl border border-accent-500/20 shadow-lg animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}>
+              <div className="flex items-center gap-2 text-xs">
+                <BarChart3 size={14} className="text-accent-500" />
+                <span className="text-gray-300">ATS Score: <span className="text-accent-500 font-bold">94/100</span></span>
               </div>
-              <h3 className="font-display font-bold text-lg mb-2">Use as Template</h3>
-              <p className="text-xs text-gray-400">Instantly clone design architectures, section formats, and themes from other portfolios with one click.</p>
             </div>
-            <span className="text-xs text-green-400 font-semibold inline-flex items-center gap-1">Zero info leaks <Sparkles size={12} /></span>
-          </div>
-
-          <div className="glass p-8 rounded-2xl border-glow flex flex-col justify-between h-64">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center mb-6">
-                <Download size={24} />
-              </div>
-              <h3 className="font-display font-bold text-lg mb-2">Full Code Export</h3>
-              <p className="text-xs text-gray-400">Export clean, structured Vite + React + Tailwind template source code in a ZIP bundle.</p>
-            </div>
-            <span className="text-xs text-yellow-400 font-semibold inline-flex items-center gap-1">100% self-hosted ready <Sparkles size={12} /></span>
           </div>
         </div>
       </section>
+
+      {/* ─── Stats Bar ─── */}
+      <section className="relative z-10 max-w-5xl mx-auto w-full px-6 pb-20">
+        <div className="glass rounded-2xl border border-dark-border p-1">
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            {stats.map((stat, index) => (
+              <div key={index} className={`flex flex-col items-center justify-center py-6 px-4 ${
+                index < stats.length - 1 ? 'md:border-r border-dark-border' : ''
+              }`}>
+                <span className="font-display font-extrabold text-3xl text-gradient">{stat.value}</span>
+                <span className="text-xs text-gray-400 mt-1 font-medium">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Features Section ─── */}
+      <section id="features" className="relative z-10 max-w-7xl mx-auto w-full px-6 py-20">
+        <div className="text-center space-y-4 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-dark-border text-xs text-brand-200 mx-auto">
+            <Zap size={14} className="text-brand-500" />
+            Platform Features
+          </div>
+          <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-white">
+            Everything you need to <span className="text-gradient">stand out</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            From portfolio creation to resume analysis — DevLaunch is the all-in-one developer branding toolkit designed for placements.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            const colorMap = {
+              brand: { iconBg: 'bg-brand-500/15', iconText: 'text-brand-500', tagText: 'text-brand-400', tagBorder: 'border-brand-500/20', tagBg: 'bg-brand-500/5' },
+              accent: { iconBg: 'bg-accent-500/15', iconText: 'text-accent-500', tagText: 'text-accent-400', tagBorder: 'border-accent-500/20', tagBg: 'bg-accent-500/5' },
+              green: { iconBg: 'bg-emerald-500/15', iconText: 'text-emerald-400', tagText: 'text-emerald-400', tagBorder: 'border-emerald-500/20', tagBg: 'bg-emerald-500/5' },
+              yellow: { iconBg: 'bg-amber-500/15', iconText: 'text-amber-400', tagText: 'text-amber-400', tagBorder: 'border-amber-500/20', tagBg: 'bg-amber-500/5' },
+              cyan: { iconBg: 'bg-cyan-500/15', iconText: 'text-cyan-400', tagText: 'text-cyan-400', tagBorder: 'border-cyan-500/20', tagBg: 'bg-cyan-500/5' },
+              rose: { iconBg: 'bg-rose-500/15', iconText: 'text-rose-400', tagText: 'text-rose-400', tagBorder: 'border-rose-500/20', tagBg: 'bg-rose-500/5' }
+            };
+            const c = colorMap[feature.color];
+            return (
+              <div key={index} className="group glass p-7 rounded-2xl border border-dark-border hover:border-white/15 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-500/5 cursor-default">
+                <div className={`w-12 h-12 rounded-xl ${c.iconBg} ${c.iconText} flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon size={22} />
+                </div>
+                <h3 className="font-display font-bold text-lg text-white mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed mb-4">{feature.description}</p>
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold border ${c.tagText} ${c.tagBorder} ${c.tagBg}`}>
+                  <Sparkles size={10} />
+                  {feature.tag}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── How It Works ─── */}
+      <section id="how-it-works" className="relative z-10 max-w-7xl mx-auto w-full px-6 py-20">
+        <div className="text-center space-y-4 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-dark-border text-xs text-brand-200 mx-auto">
+            <Terminal size={14} className="text-accent-500" />
+            How It Works
+          </div>
+          <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-white">
+            Launch in <span className="text-gradient">three steps</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Go from zero to a fully published developer portfolio in under 10 minutes.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          {/* Connector Line */}
+          <div className="hidden md:block absolute top-16 left-[16.5%] right-[16.5%] h-px bg-gradient-to-r from-brand-500/50 via-accent-500/50 to-pink-500/50" />
+
+          {steps.map((step, index) => {
+            const StepIcon = step.icon;
+            return (
+              <div key={index} className="relative text-center group">
+                {/* Step Number Circle */}
+                <div className="relative mx-auto w-32 h-32 mb-8">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-500/10 to-accent-500/10 group-hover:from-brand-500/20 group-hover:to-accent-500/20 transition-all duration-500" />
+                  <div className="absolute inset-3 rounded-full glass border border-dark-border flex items-center justify-center group-hover:border-brand-500/30 transition-all duration-500">
+                    <StepIcon size={36} className="text-brand-400 group-hover:text-brand-300 transition-colors" />
+                  </div>
+                  {/* Step Number Badge */}
+                  <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-brand-600 to-accent-600 flex items-center justify-center font-display font-bold text-white text-sm shadow-lg shadow-brand-500/25">
+                    {step.step}
+                  </div>
+                </div>
+                <h3 className="font-display font-bold text-xl text-white mb-3">{step.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed max-w-xs mx-auto">{step.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── Tech Stack Showcase ─── */}
+      <section id="tech" className="relative z-10 max-w-5xl mx-auto w-full px-6 py-20">
+        <div className="text-center space-y-4 mb-12">
+          <h2 className="font-display font-bold text-2xl text-white">
+            Built with <span className="text-gradient">Modern Technologies</span>
+          </h2>
+          <p className="text-gray-400 text-sm max-w-lg mx-auto">
+            DevLaunch uses a production-grade MERN stack with AI integration, ensuring performance, security, and scalability.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+          {techStack.map((tech, index) => {
+            const TechIcon = tech.icon;
+            return (
+              <div key={index} className="group flex flex-col items-center gap-3 py-5 px-3 rounded-xl glass border border-dark-border hover:border-brand-500/20 transition-all duration-300 hover:-translate-y-1 cursor-default">
+                <TechIcon size={24} className="text-gray-400 group-hover:text-brand-400 transition-colors" />
+                <span className="text-[11px] font-semibold text-gray-500 group-hover:text-gray-300 transition-colors">{tech.name}</span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── CTA Section ─── */}
+      <section className="relative z-10 max-w-7xl mx-auto w-full px-6 py-20">
+        <div className="relative overflow-hidden rounded-3xl">
+          {/* CTA Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-600 via-brand-700 to-accent-600 animate-gradient-shift" />
+          <div className="absolute inset-0 landing-grid opacity-30" />
+          {/* CTA Floating Orbs */}
+          <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-accent-500/20 blur-3xl" />
+
+          <div className="relative z-10 px-8 py-16 md:px-16 md:py-20 text-center space-y-8">
+            <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-white leading-tight">
+              Ready to launch your<br />developer brand?
+            </h2>
+            <p className="text-white/70 text-lg max-w-xl mx-auto">
+              Join developers who are building stunning portfolios, acing ATS scans, and getting discovered by recruiters.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/signup" className="group flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-brand-700 font-bold shadow-2xl shadow-black/20 transition-all hover:-translate-y-0.5 hover:shadow-3xl duration-300">
+                Create Free Account
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link to="/showcase" className="flex items-center gap-2 px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold transition-all backdrop-blur-sm">
+                Browse Portfolios
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Footer ─── */}
+      <footer className="relative z-10 border-t border-dark-border">
+        <div className="max-w-7xl mx-auto w-full px-6 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            {/* Brand */}
+            <div className="md:col-span-1 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center font-display font-bold text-white text-lg">
+                  D
+                </div>
+                <span className="font-display font-bold text-xl text-gradient">DevLaunch</span>
+              </div>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                The all-in-one developer branding platform. Build portfolios, analyze resumes, and get discovered.
+              </p>
+            </div>
+
+            {/* Product Links */}
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">Product</h4>
+              <ul className="space-y-2.5">
+                <li><Link to="/signup" className="text-sm text-gray-500 hover:text-white transition-colors">Portfolio Builder</Link></li>
+                <li><Link to="/signup" className="text-sm text-gray-500 hover:text-white transition-colors">Resume Analyzer</Link></li>
+                <li><Link to="/showcase" className="text-sm text-gray-500 hover:text-white transition-colors">Community Showcase</Link></li>
+                <li><Link to="/signup" className="text-sm text-gray-500 hover:text-white transition-colors">Code Export</Link></li>
+              </ul>
+            </div>
+
+            {/* Resources Links */}
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">Resources</h4>
+              <ul className="space-y-2.5">
+                <li><a href="#features" className="text-sm text-gray-500 hover:text-white transition-colors">Features</a></li>
+                <li><a href="#how-it-works" className="text-sm text-gray-500 hover:text-white transition-colors">How It Works</a></li>
+                <li><a href="#tech" className="text-sm text-gray-500 hover:text-white transition-colors">Tech Stack</a></li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">Connect</h4>
+              <div className="flex items-center gap-3">
+                <a href="https://github.com/mokshupadhyay1/Portfolio-builder" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-dark-border flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                  <Github size={16} />
+                </a>
+                <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-dark-border flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                  <Linkedin size={16} />
+                </a>
+                <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-dark-border flex items-center justify-center text-gray-400 hover:text-white transition-all">
+                  <Mail size={16} />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-dark-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-gray-600">© 2026 DevLaunch. Built with ❤️ for developers.</p>
+            <div className="flex items-center gap-1 text-xs text-gray-600">
+              <span>Crafted by</span>
+              <a href="https://github.com/mokshupadhyay1" target="_blank" rel="noopener noreferrer" className="text-brand-500 hover:underline font-semibold">mokshupadhyay1</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
+
 
 const LoginPage = () => {
   const { user, login } = useAuth();
