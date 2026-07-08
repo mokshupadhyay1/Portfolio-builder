@@ -97,6 +97,7 @@ exports.getProfile = async (req, res, next) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        developerRole: user.developerRole,
         createdAt: user.createdAt
       }
     });

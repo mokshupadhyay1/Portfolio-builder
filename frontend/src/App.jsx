@@ -2427,6 +2427,147 @@ const AdminPage = () => {
   );
 };
 
+const SettingsPage = () => {
+  const { user, setUser } = useAuth();
+  const [username, setUsername] = useState(user?.username || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [developerRole, setDeveloperRole] = useState(user?.developerRole || 'none');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [status, setStatus] = useState({ success: true, message: '' });
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    if (password && password !== confirmPassword) {
+      setStatus({ success: false, message: 'Passwords do not match.' });
+      return;
+    }
+    
+    setIsUpdating(true);
+    setStatus({ success: true, message: '' });
+    try {
+      const payload = { username, email, developerRole };
+      if (password) {
+        payload.password = password;
+      }
+      const response = await API.put('/user/profile', payload);
+      const updatedUser = response.data.user;
+      
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      setPassword('');
+      setConfirmPassword('');
+      setStatus({ success: true, message: 'Profile updated successfully!' });
+    } catch (err) {
+      console.error(err);
+      setStatus({ success: false, message: err.response?.data?.error || 'Failed to update profile.' });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto space-y-8 text-left font-sans">
+      <div>
+        <h3 className="font-display font-bold text-2xl text-white">Account Settings</h3>
+        <p className="text-xs text-gray-400">Manage your developer profile settings, login credentials, and branding track.</p>
+      </div>
+
+      <div className="glass p-8 rounded-2xl border border-dark-border space-y-6">
+        {status.message && (
+          <div className={`p-4 rounded-xl text-xs border ${
+            status.success 
+              ? 'bg-green-500/10 border-green-500/20 text-green-400' 
+              : 'bg-red-500/10 border-red-500/20 text-red-400'
+          }`}>
+            {status.message}
+          </div>
+        )}
+
+        <form onSubmit={handleUpdateProfile} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-300">Username</label>
+              <input 
+                type="text" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white/5 border border-dark-border rounded-lg text-xs text-white focus:outline-none focus:border-brand-500" 
+                required
+              />
+            </div>
+            
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-300">Email Address</label>
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white/5 border border-dark-border rounded-lg text-xs text-white focus:outline-none focus:border-brand-500" 
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-gray-300">Developer Track</label>
+            <select 
+              value={developerRole}
+              onChange={(e) => setDeveloperRole(e.target.value)}
+              className="w-full px-4 py-2.5 bg-white/5 border border-dark-border rounded-lg text-xs text-white focus:outline-none focus:border-brand-500"
+            >
+              <option value="none" className="bg-dark-bg text-white">None (Not Selected)</option>
+              <option value="frontend" className="bg-dark-bg text-white">Frontend Developer</option>
+              <option value="backend" className="bg-dark-bg text-white">Backend Developer</option>
+              <option value="fullstack" className="bg-dark-bg text-white">Full Stack Developer</option>
+              <option value="ai-ml" className="bg-dark-bg text-white">AI / ML Engineer</option>
+              <option value="mobile" className="bg-dark-bg text-white">Mobile Developer</option>
+              <option value="devops" className="bg-dark-bg text-white">DevOps / Cloud Engineer</option>
+            </select>
+          </div>
+
+          <div className="border-t border-dark-border pt-5 space-y-5">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider font-display">Change Password</h4>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-300">New Password (Optional)</label>
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-2.5 bg-white/5 border border-dark-border rounded-lg text-xs text-white focus:outline-none focus:border-brand-500" 
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-300">Confirm New Password</label>
+                <input 
+                  type="password" 
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-2.5 bg-white/5 border border-dark-border rounded-lg text-xs text-white focus:outline-none focus:border-brand-500" 
+                />
+              </div>
+            </div>
+          </div>
+
+          <button 
+            type="submit"
+            disabled={isUpdating}
+            className="px-6 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors shadow-lg shadow-brand-500/10 disabled:opacity-50"
+          >
+            {isUpdating ? 'Saving Changes...' : 'Save Settings'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // Route controller orchestrating layouts
 const AppRoutes = () => {
   return (
@@ -2475,10 +2616,7 @@ const AppRoutes = () => {
       <Route path="/settings" element={
         <ProtectedRoute>
           <DashboardLayout>
-            <div className="text-left glass p-6 rounded-xl">
-              <h3 className="font-display font-bold text-lg text-white mb-2">Account Settings</h3>
-              <p className="text-xs text-gray-400">Configure your branding platform and developer role mapping configurations.</p>
-            </div>
+            <SettingsPage />
           </DashboardLayout>
         </ProtectedRoute>
       } />

@@ -9,14 +9,27 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if token and user info are stored locally on startup
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
+    const checkAuth = async () => {
+      const storedUser = localStorage.getItem('user');
+      const storedToken = localStorage.getItem('token');
 
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+      if (storedUser && storedToken) {
+        try {
+          const response = await API.get('/auth/profile');
+          const userData = response.data.data;
+          localStorage.setItem('user', JSON.stringify(userData));
+          setUser(userData);
+        } catch (err) {
+          console.error('Session validation failed on start:', err);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   // Sync auth state across multiple browser tabs
