@@ -1,0 +1,16 @@
+{
+  "name": "devlaunch-root",
+  "version": "1.0.0",
+  "description": "DevLaunch - Developer Branding Platform",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "npm run dev --prefix backend",
+    "dev:client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "start": "node backend/server.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
