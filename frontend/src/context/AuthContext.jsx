@@ -19,6 +19,53 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // Sync auth state across multiple browser tabs
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'token' && !e.newValue) {
+        setUser(null);
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Automatically logout user after 1 hour of inactivity
+  useEffect(() => {
+    if (!user) return;
+
+    let inactivityTimeout;
+    const INACTIVITY_LIMIT = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    const resetTimer = () => {
+      clearTimeout(inactivityTimeout);
+      inactivityTimeout = setTimeout(() => {
+        logout();
+        alert('You have been logged out due to 1 hour of inactivity.');
+      }, INACTIVITY_LIMIT);
+    };
+
+    const activityEvents = [
+      'mousedown', 'mousemove', 'keypress', 
+      'scroll', 'touchstart', 'click'
+    ];
+
+    resetTimer();
+
+    activityEvents.forEach(event => {
+      window.addEventListener(event, resetTimer);
+    });
+
+    return () => {
+      clearTimeout(inactivityTimeout);
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, resetTimer);
+      });
+    };
+  }, [user]);
+
   const login = async (email, password) => {
     setLoading(true);
     setError(null);
